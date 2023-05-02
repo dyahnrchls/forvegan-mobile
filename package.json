@@ -74,7 +74,8 @@
     "test:apk": "react-native run-android --variant=release",
     "prettier": "cd src && npx prettier --write . && git add .",
     "prepare": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "engine": {
     "node": "16.10.0",
