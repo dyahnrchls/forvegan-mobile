@@ -12,9 +12,10 @@ export default (theme: ExtendedTheme) => {
   const { colors } = theme;
   return StyleSheet.create<Style>({
     container: {
-      flex: 1,
       alignItems: "center",
       justifyContent: "center",
+      marginTop: 40,
+      // height: "100%",
     },
     titleTextStyle: {
       fontSize: 32,
@@ -22,11 +23,11 @@ export default (theme: ExtendedTheme) => {
     buttonStyle: {
       height: 45,
       width: "90%",
-      marginTop: 32,
-      borderRadius: 12,
+      marginVertical: 12,
+      borderRadius: 100,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: colors.primary,
+      backgroundColor: "#4A6130",
       shadowRadius: 5,
       shadowOpacity: 0.7,
       shadowColor: colors.primary,
@@ -34,6 +35,7 @@ export default (theme: ExtendedTheme) => {
         width: 0,
         height: 3,
       },
+      padding: 12,
     },
     buttonTextStyle: {
       color: colors.text,
