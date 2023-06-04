@@ -1,66 +1,45 @@
-import { ViewStyle, StyleSheet, TextStyle, ImageStyle } from "react-native";
 import { ExtendedTheme } from "@react-navigation/native";
-import { ScreenWidth } from "@freakycoder/react-native-helpers";
+import { ViewStyle, StyleSheet, TextStyle } from "react-native";
 
 interface Style {
   container: ViewStyle;
   titleTextStyle: TextStyle;
   buttonStyle: ViewStyle;
   buttonTextStyle: TextStyle;
-  header: ViewStyle;
-  contentContainer: ViewStyle;
-  listContainer: ViewStyle;
-  profilePicImageStyle: ImageStyle;
 }
 
 export default (theme: ExtendedTheme) => {
   const { colors } = theme;
   return StyleSheet.create<Style>({
     container: {
-      flex: 1,
       alignItems: "center",
-      backgroundColor: colors.background,
+      justifyContent: "center",
+      marginTop: 40,
+      // height: "100%",
     },
     titleTextStyle: {
       fontSize: 32,
     },
     buttonStyle: {
       height: 45,
-      width: ScreenWidth * 0.9,
-      marginTop: 32,
-      borderRadius: 12,
+      width: "90%",
+      marginVertical: 12,
+      borderRadius: 100,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: colors.primary,
+      backgroundColor: "#4A6130",
       shadowRadius: 5,
       shadowOpacity: 0.7,
-      shadowColor: colors.shadow,
+      shadowColor: colors.primary,
       shadowOffset: {
         width: 0,
         height: 3,
       },
+      padding: 12,
     },
     buttonTextStyle: {
-      color: colors.white,
+      color: colors.text,
       fontWeight: "700",
-    },
-    header: {
-      width: ScreenWidth * 0.9,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    contentContainer: {
-      flex: 1,
-      marginTop: 16,
-    },
-    listContainer: {
-      marginTop: 8,
-    },
-    profilePicImageStyle: {
-      height: 50,
-      width: 50,
-      borderRadius: 30,
     },
   });
 };

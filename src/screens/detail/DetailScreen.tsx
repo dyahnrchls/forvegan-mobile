@@ -6,15 +6,6 @@ import { useTheme } from "@react-navigation/native";
  */
 import createStyles from "./DetailScreen.style";
 import Text from "@shared-components/text-wrapper/TextWrapper";
-import RNBounceable from "@freakycoder/react-native-bounceable";
-import {
-  launchImageLibrary,
-  launchCamera,
-  ImagePickerResponse,
-  MediaType,
-  Asset,
-} from "react-native-image-picker";
-import axios from "axios";
 import fonts from "@fonts";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -39,88 +30,6 @@ const DetailScreen: React.FC<DetailScreenProps> = () => {
     "../../assets/images/ingredients-example.png";
   const forveganLogo = "../../assets/images/forvegan-logo.png";
 
-  const handleImageSelect = () => {
-    const options: { mediaType: MediaType; includeBase64: boolean } = {
-      mediaType: "photo",
-      includeBase64: false,
-    };
-
-    launchImageLibrary(options, (response: ImagePickerResponse) => {
-      if (response.didCancel) {
-        console.log("User cancelled image picker");
-      } else if (response.errorMessage) {
-        console.log("ImagePicker Error: ", response.errorMessage);
-      } else {
-        const assets = response.assets as Asset[];
-        const newSelectedImage: SelectedImage = {
-          uri: assets[0].uri || "",
-          type: assets[0].type || "",
-          fileName: assets[0].fileName || "",
-          fileSize: assets[0].fileSize || 0,
-        };
-        const formData = new FormData();
-        formData.append("image", {
-          uri: newSelectedImage.uri,
-          type: newSelectedImage.type,
-          name: newSelectedImage.fileName,
-        });
-        console.log({
-          formData,
-        });
-        axios
-          .post("https://pear-different-snail.cyclic.app/image", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => setResult(res?.data?.message))
-          .catch((err) => console.error(err));
-        setSelectedImage(newSelectedImage);
-      }
-    });
-  };
-
-  const handleTakePhoto = () => {
-    const options: { mediaType: MediaType; includeBase64: boolean } = {
-      mediaType: "photo",
-      includeBase64: false,
-    };
-
-    launchCamera(options, (response: ImagePickerResponse) => {
-      if (response.didCancel) {
-        console.log("User cancelled image picker");
-      } else if (response.errorMessage) {
-        console.log("ImagePicker Error: ", response.errorMessage);
-      } else {
-        const assets = response.assets as Asset[];
-        const newSelectedImage: SelectedImage = {
-          uri: assets[0].uri || "",
-          type: assets[0].type || "",
-          fileName: assets[0].fileName || "",
-          fileSize: assets[0].fileSize || 0,
-        };
-        const formData = new FormData();
-        formData.append("image", {
-          uri: newSelectedImage.uri,
-          type: newSelectedImage.type,
-          name: newSelectedImage.fileName,
-        });
-        console.log({
-          formData,
-        });
-        axios
-          .post("https://pear-different-snail.cyclic.app/image", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => setResult(res?.data?.message))
-          .catch((err) => console.error(err));
-        setSelectedImage(newSelectedImage);
-      }
-    });
-  };
-
   return (
     <SafeAreaView>
       <View
@@ -136,15 +45,6 @@ const DetailScreen: React.FC<DetailScreenProps> = () => {
         />
       </View>
       <View style={styles.container}>
-        <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
-          Scan Ingredients
-        </Text>
-        <Text
-          fontFamily={fonts.poppins.regular}
-          style={{ fontSize: 16, paddingTop: 16 }}
-        >
-          Scan the ingredients on your food
-        </Text>
         {selectedImage ? (
           <Image
             source={{
@@ -155,30 +55,17 @@ const DetailScreen: React.FC<DetailScreenProps> = () => {
         ) : (
           <Image
             source={require(imagesIngredientsExample)}
-            style={{ width: 200, height: 200, marginVertical: 80 }}
+            style={{ width: 200, height: 200 }}
           />
         )}
-
-        <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
-          Take a photo of the ingredients lists
+        <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
+          Non - Vegan
         </Text>
-        <RNBounceable style={styles.buttonStyle} onPress={handleTakePhoto}>
-          <Text
-            fontFamily={fonts.poppins.semiBold}
-            style={{ fontSize: 16, fontWeight: "bold" }}
-            color={colors.white}
-          >
-            Take a picture
-          </Text>
-        </RNBounceable>
-        <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
-          Or open one from your{" "}
-          <Text
-            onPress={handleImageSelect}
-            style={{ textDecorationLine: "underline", fontWeight: "bold" }}
-          >
-            Gallery
-          </Text>
+        <Text
+          fontFamily={fonts.poppins.regular}
+          style={{ fontSize: 16, paddingTop: 16, textAlign: "center" }}
+        >
+          All item has been scanned and the search returned 1 flagged ingredient
         </Text>
         <Text>{result}</Text>
       </View>

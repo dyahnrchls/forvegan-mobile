@@ -14,7 +14,6 @@ import { DarkTheme, LightTheme, palette } from "@theme/themes";
 import HomeScreen from "@screens/home/HomeScreen";
 import SearchScreen from "@screens/search/SearchScreen";
 import DetailScreen from "@screens/detail/DetailScreen";
-import ProfileScreen from "@screens/profile/ProfileScreen";
 import NotificationScreen from "@screens/notification/NotificationScreen";
 
 // ? If you want to use stack or tab or both
@@ -83,7 +82,7 @@ const Navigation = () => {
           name={SCREENS.NOTIFICATION}
           component={NotificationScreen}
         />
-        <Tab.Screen name={SCREENS.PROFILE} component={ProfileScreen} />
+        <Tab.Screen name={SCREENS.DETAIL} component={DetailScreen} />
       </Tab.Navigator>
     );
   };
@@ -97,7 +96,9 @@ const Navigation = () => {
       theme={isDarkMode ? DarkTheme : LightTheme}
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name={SCREENS.HOME} component={renderTabNavigation} /> */}
+        <Stack.Screen name={SCREENS.HOME}>
+          {(props) => <HomeScreen {...props} />}
+        </Stack.Screen>
         <Stack.Screen name={SCREENS.DETAIL}>
           {(props) => <DetailScreen {...props} />}
         </Stack.Screen>
