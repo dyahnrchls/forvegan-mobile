@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Image, View } from "react-native";
 import { useTheme } from "@react-navigation/native";
 /**
@@ -32,10 +32,10 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(
-    null,
-  );
-  const [result, setResult] = useState<string>("");
+  // const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(
+  //   null,
+  // );
+  // const [result, setResult] = useState<string>("");
 
   const imagesIngredientsExample =
     "../../assets/images/ingredients-example.png";
@@ -74,13 +74,13 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           })
           .then((res) => {
             const message = res?.data?.message ?? "";
-            setResult(message);
+            // setResult(message);
             NavigationService.navigate(SCREENS.DETAIL, {
               message,
             });
           })
           .catch((err) => console.error(err));
-        setSelectedImage(newSelectedImage);
+        // setSelectedImage(newSelectedImage);
       }
     });
   };
@@ -118,13 +118,13 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           })
           .then((res) => {
             const message = res?.data?.message ?? "";
-            setResult(message);
+            // setResult(message);
             NavigationService.navigate(SCREENS.DETAIL, {
               message,
             });
           })
           .catch((err) => console.error(err));
-        setSelectedImage(newSelectedImage);
+        // setSelectedImage(newSelectedImage);
       }
     });
   };
@@ -153,19 +153,11 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         >
           Scan the ingredients on your food
         </Text>
-        {selectedImage ? (
-          <Image
-            source={{
-              uri: selectedImage.uri,
-            }}
-            style={{ width: 200, height: 200 }}
-          />
-        ) : (
-          <Image
-            source={require(imagesIngredientsExample)}
-            style={{ width: 200, height: 200, marginVertical: 80 }}
-          />
-        )}
+
+        <Image
+          source={require(imagesIngredientsExample)}
+          style={{ width: 200, height: 200, marginVertical: 80 }}
+        />
 
         <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
           Take a photo of the ingredients lists
@@ -192,7 +184,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             Gallery
           </Text>
         </Text>
-        <Text>{result}</Text>
+        {/* <Text>{result}</Text> */}
       </View>
     </SafeAreaView>
   );
