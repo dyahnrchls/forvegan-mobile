@@ -1,42 +1,54 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Image, View } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { RouteProp, useTheme } from "@react-navigation/native";
 /**
  * ? Local Imports
  */
 import createStyles from "./DetailScreen.style";
 import Text from "@shared-components/text-wrapper/TextWrapper";
 import fonts from "@fonts";
-import { SafeAreaView } from "react-native-safe-area-context";
+// import { SafeAreaView } from "react-native-safe-area-context";
+// import Accordion from "@shared-components/accordion/Accordion";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-interface DetailScreenProps {}
-interface SelectedImage {
-  uri: string;
-  type: string;
-  fileName: string;
-  fileSize: number;
-}
+type RootStackParamList = {
+  Home: undefined;
+  Detail: { message: string };
+};
 
-const DetailScreen: React.FC<DetailScreenProps> = () => {
+type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Detail">;
+
+type DetailsScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Detail"
+>;
+
+type DetailScreenProps = {
+  route: DetailsScreenRouteProp;
+  navigation: DetailsScreenNavigationProp;
+};
+
+const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
   const theme = useTheme();
-  const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(
-    null,
-  );
-  const [result, setResult] = useState<string>("");
 
-  const imagesIngredientsExample =
-    "../../assets/images/ingredients-example.png";
+  const { colors } = theme;
+  const { message } = route.params;
+
+  const vegan = "../../assets/images/vegan.png";
+  const nonVegan = "../../assets/images/non-vegan.png";
   const forveganLogo = "../../assets/images/forvegan-logo.png";
 
   return (
-    <SafeAreaView>
+    <View>
       <View
         style={{
-          paddingVertical: 4,
+          paddingTop: 16,
+          paddingBottom: 4,
           paddingHorizontal: 16,
           borderBottomWidth: 1,
+          zIndex: 99,
+          backgroundColor: "white",
         }}
       >
         <Image
@@ -45,31 +57,34 @@ const DetailScreen: React.FC<DetailScreenProps> = () => {
         />
       </View>
       <View style={styles.container}>
-        {selectedImage ? (
-          <Image
-            source={{
-              uri: selectedImage.uri,
-            }}
-            style={{ width: 200, height: 200 }}
-          />
-        ) : (
-          <Image
-            source={require(imagesIngredientsExample)}
-            style={{ width: 200, height: 200 }}
-          />
-        )}
+        <Image
+          source={
+            message === "The product isn't vegan"
+              ? require(nonVegan)
+              : require(vegan)
+          }
+          style={{ width: 200, height: 200 }}
+        />
         <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
-          Non - Vegan
+          {message === "The product isn't vegan" ? "Non - Vegan" : "Vegan"}
         </Text>
-        <Text
+        {/* <Text
           fontFamily={fonts.poppins.regular}
           style={{ fontSize: 16, paddingTop: 16, textAlign: "center" }}
         >
           All item has been scanned and the search returned 1 flagged ingredient
-        </Text>
-        <Text>{result}</Text>
+        </Text> */}
+        {/* <Accordion
+          data={[
+            {
+              key: "Oats",
+              value: true,
+            },
+          ]}
+          title="Lists of Ingredients"
+        /> */}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

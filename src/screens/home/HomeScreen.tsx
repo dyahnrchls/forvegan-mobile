@@ -49,9 +49,9 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 
     launchImageLibrary(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
-        console.log("User cancelled image picker");
+        console.info("User cancelled image picker");
       } else if (response.errorMessage) {
-        console.log("ImagePicker Error: ", response.errorMessage);
+        console.error("ImagePicker Error: ", response.errorMessage);
       } else {
         const assets = response.assets as Asset[];
         const newSelectedImage: SelectedImage = {
@@ -66,16 +66,19 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           type: newSelectedImage.type,
           name: newSelectedImage.fileName,
         });
-        console.log({
-          formData,
-        });
         axios
           .post("https://pear-different-snail.cyclic.app/image", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
           })
-          .then((res) => setResult(res?.data?.message))
+          .then((res) => {
+            const message = res?.data?.message ?? "";
+            setResult(message);
+            NavigationService.navigate(SCREENS.DETAIL, {
+              message,
+            });
+          })
           .catch((err) => console.error(err));
         setSelectedImage(newSelectedImage);
       }
@@ -90,9 +93,9 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 
     launchCamera(options, (response: ImagePickerResponse) => {
       if (response.didCancel) {
-        console.log("User cancelled image picker");
+        console.info("User cancelled image picker");
       } else if (response.errorMessage) {
-        console.log("ImagePicker Error: ", response.errorMessage);
+        console.error("ImagePicker Error: ", response.errorMessage);
       } else {
         const assets = response.assets as Asset[];
         const newSelectedImage: SelectedImage = {
@@ -107,16 +110,19 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           type: newSelectedImage.type,
           name: newSelectedImage.fileName,
         });
-        console.log({
-          formData,
-        });
         axios
           .post("https://pear-different-snail.cyclic.app/image", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
           })
-          .then((res) => setResult(res?.data?.message))
+          .then((res) => {
+            const message = res?.data?.message ?? "";
+            setResult(message);
+            NavigationService.navigate(SCREENS.DETAIL, {
+              message,
+            });
+          })
           .catch((err) => console.error(err));
         setSelectedImage(newSelectedImage);
       }
@@ -166,8 +172,8 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         </Text>
         <RNBounceable
           style={styles.buttonStyle}
-          // onPress={handleTakePhoto}
-          onPress={() => NavigationService.navigate(SCREENS.DETAIL)}
+          onPress={handleTakePhoto}
+          // onPress={() => NavigationService.navigate(SCREENS.DETAIL)}
         >
           <Text
             fontFamily={fonts.poppins.semiBold}
