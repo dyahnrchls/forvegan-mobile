@@ -14,7 +14,7 @@ export default (theme: ExtendedTheme) => {
     container: {
       alignItems: "center",
       justifyContent: "center",
-      marginTop: 40,
+      marginTop: 25,
       // height: "100%",
     },
     titleTextStyle: {

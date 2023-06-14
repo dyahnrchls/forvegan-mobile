@@ -133,23 +133,35 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
     <SafeAreaView>
       <View
         style={{
-          paddingVertical: 4,
-          paddingHorizontal: 16,
-          borderBottomWidth: 1,
+          elevation: 0.5,
+          marginBottom: 16,
+          overflow: "hidden",
         }}
       >
-        <Image
-          source={require(forveganLogo)}
-          style={{ width: 60, height: 60, resizeMode: "contain" }}
-        />
+        <View
+          style={{
+            paddingVertical: 4,
+            paddingHorizontal: 16,
+            marginBottom: -2,
+          }}
+        >
+          <Image
+            source={require(forveganLogo)}
+            style={{ width: 60, height: 60, resizeMode: "contain" }}
+          />
+        </View>
       </View>
       <View style={styles.container}>
-        <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
+        <Text
+          fontFamily={fonts.poppins.semiBold}
+          color={colors.text}
+          style={{ fontSize: 24, fontWeight: "600" }}
+        >
           Scan Ingredients
         </Text>
         <Text
           fontFamily={fonts.poppins.regular}
-          style={{ fontSize: 16, paddingTop: 16 }}
+          style={{ fontSize: 16, paddingTop: 16, fontWeight: "400" }}
         >
           Scan the ingredients on your food
         </Text>
@@ -159,7 +171,10 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           style={{ width: 200, height: 200, marginVertical: 80 }}
         />
 
-        <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
+        <Text
+          fontFamily={fonts.poppins.regular}
+          style={{ fontSize: 14, fontWeight: "400" }}
+        >
           Take a photo of the ingredients lists
         </Text>
         <RNBounceable
@@ -169,17 +184,20 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         >
           <Text
             fontFamily={fonts.poppins.semiBold}
-            style={{ fontSize: 16, fontWeight: "bold" }}
+            style={{ fontSize: 16, fontWeight: "600", lineHeight: 24 }}
             color={colors.white}
           >
             Take a picture
           </Text>
         </RNBounceable>
-        <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
+        <Text
+          fontFamily={fonts.poppins.regular}
+          style={{ fontSize: 14, fontWeight: "400" }}
+        >
           Or open one from your{" "}
           <Text
             onPress={handleImageSelect}
-            style={{ textDecorationLine: "underline", fontWeight: "bold" }}
+            style={{ textDecorationLine: "underline", fontWeight: "700" }}
           >
             Gallery
           </Text>
