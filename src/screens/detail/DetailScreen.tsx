@@ -10,10 +10,13 @@ import fonts from "@fonts";
 // import { SafeAreaView } from "react-native-safe-area-context";
 // import Accordion from "@shared-components/accordion/Accordion";
 import { StackNavigationProp } from "@react-navigation/stack";
+import RNBounceable from "@freakycoder/react-native-bounceable";
+import * as NavigationService from "react-navigation-helpers";
+import { SCREENS } from "@shared-constants";
 
 type RootStackParamList = {
   Home: undefined;
-  Detail: { message: string };
+  Detail: { message?: string };
 };
 
 type DetailsScreenRouteProp = RouteProp<RootStackParamList, "Detail">;
@@ -33,7 +36,7 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   const { colors } = theme;
-  const { message } = route.params;
+  const { message } = route.params || "";
 
   const vegan = "../../assets/images/vegan.png";
   const nonVegan = "../../assets/images/non-vegan.png";
@@ -68,6 +71,18 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
         <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
           {message === "The product isn't vegan" ? "Non - Vegan" : "Vegan"}
         </Text>
+        <RNBounceable
+          style={styles.buttonStyle}
+          onPress={() => NavigationService.navigate(SCREENS.HOME)}
+        >
+          <Text
+            fontFamily={fonts.poppins.semiBold}
+            style={{ fontSize: 16, fontWeight: "600", lineHeight: 24 }}
+            color={colors.white}
+          >
+            Done
+          </Text>
+        </RNBounceable>
         {/* <Text
           fontFamily={fonts.poppins.regular}
           style={{ fontSize: 16, paddingTop: 16, textAlign: "center" }}

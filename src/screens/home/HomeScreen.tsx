@@ -19,6 +19,7 @@ import fonts from "@fonts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SCREENS } from "@shared-constants";
 import * as NavigationService from "react-navigation-helpers";
+import Header from "./components/header/Header";
 
 interface HomeScreenProps {}
 interface SelectedImage {
@@ -39,7 +40,6 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   const imagesIngredientsExample =
     "../../assets/images/ingredients-example.png";
-  const forveganLogo = "../../assets/images/forvegan-logo.png";
 
   const handleImageSelect = () => {
     const options: { mediaType: MediaType; includeBase64: boolean } = {
@@ -131,18 +131,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
 
   return (
     <SafeAreaView>
-      <View
-        style={{
-          paddingVertical: 4,
-          paddingHorizontal: 16,
-          borderBottomWidth: 1,
-        }}
-      >
-        <Image
-          source={require(forveganLogo)}
-          style={{ width: 60, height: 60, resizeMode: "contain" }}
-        />
-      </View>
+      <Header />
       <View style={styles.container}>
         <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
           Scan Ingredients
@@ -162,11 +151,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
           Take a photo of the ingredients lists
         </Text>
-        <RNBounceable
-          style={styles.buttonStyle}
-          onPress={handleTakePhoto}
-          // onPress={() => NavigationService.navigate(SCREENS.DETAIL)}
-        >
+        <RNBounceable style={styles.buttonStyle} onPress={handleTakePhoto}>
           <Text
             fontFamily={fonts.poppins.semiBold}
             style={{ fontSize: 16, fontWeight: "bold" }}
