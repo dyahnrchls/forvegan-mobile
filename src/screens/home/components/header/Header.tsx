@@ -7,23 +7,15 @@ const Header = () => {
   return (
     <View
       style={{
-        elevation: 0.5,
-        marginBottom: 16,
-        overflow: "hidden",
+        paddingVertical: 4,
+        paddingHorizontal: 16,
+        marginBottom: -2,
       }}
     >
-      <View
-        style={{
-          paddingVertical: 4,
-          paddingHorizontal: 16,
-          marginBottom: -2,
-        }}
-      >
-        <Image
-          source={require(forveganLogo)}
-          style={{ width: 60, height: 60, resizeMode: "contain" }}
-        />
-      </View>
+      <Image
+        source={require(forveganLogo)}
+        style={{ width: 60, height: 60, resizeMode: "contain" }}
+      />
     </View>
   );
 };

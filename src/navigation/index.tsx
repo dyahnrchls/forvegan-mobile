@@ -15,6 +15,7 @@ import HomeScreen from "@screens/home/HomeScreen";
 import SearchScreen from "@screens/search/SearchScreen";
 import DetailScreen from "@screens/detail/DetailScreen";
 import NotificationScreen from "@screens/notification/NotificationScreen";
+import Header from "@screens/home/components/header/Header";
 
 // ? If you want to use stack or tab or both
 const Tab = createBottomTabNavigator();
@@ -95,11 +96,35 @@ const Navigation = () => {
       }}
       theme={isDarkMode ? DarkTheme : LightTheme}
     >
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={SCREENS.HOME}>
+      <Stack.Navigator screenOptions={{ headerShown: true }}>
+        <Stack.Screen
+          options={() => {
+            return {
+              headerTitle: "",
+              headerStyle: {
+                backgroundColor: "white",
+              },
+              // eslint-disable-next-line react/no-unstable-nested-components
+              headerLeft: () => <Header />,
+            };
+          }}
+          name={SCREENS.HOME}
+        >
           {(props) => <HomeScreen {...props} />}
         </Stack.Screen>
-        <Stack.Screen name={SCREENS.DETAIL}>
+        <Stack.Screen
+          options={() => {
+            return {
+              headerTitle: "",
+              headerStyle: {
+                backgroundColor: "white",
+              },
+              // eslint-disable-next-line react/no-unstable-nested-components
+              headerLeft: () => <Header />,
+            };
+          }}
+          name={SCREENS.DETAIL}
+        >
           {(props) => <DetailScreen {...props} />}
         </Stack.Screen>
       </Stack.Navigator>

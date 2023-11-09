@@ -40,25 +40,9 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
 
   const vegan = "../../assets/images/vegan.png";
   const nonVegan = "../../assets/images/non-vegan.png";
-  const forveganLogo = "../../assets/images/forvegan-logo.png";
 
   return (
     <View>
-      <View
-        style={{
-          paddingTop: 16,
-          paddingBottom: 4,
-          paddingHorizontal: 16,
-          borderBottomWidth: 1,
-          zIndex: 99,
-          backgroundColor: "white",
-        }}
-      >
-        <Image
-          source={require(forveganLogo)}
-          style={{ width: 60, height: 60, resizeMode: "contain" }}
-        />
-      </View>
       <View style={styles.container}>
         <Image
           source={

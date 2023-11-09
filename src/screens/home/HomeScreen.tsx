@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Image, View } from "react-native";
 import { useTheme } from "@react-navigation/native";
 /**
@@ -20,6 +20,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SCREENS } from "@shared-constants";
 import * as NavigationService from "react-navigation-helpers";
 import Header from "./components/header/Header";
+import Loading from "./components/loading/Loading";
 
 interface HomeScreenProps {}
 interface SelectedImage {
@@ -33,9 +34,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  // const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(
-  //   null,
-  // );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   // const [result, setResult] = useState<string>("");
 
   const imagesIngredientsExample =
@@ -66,6 +65,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           type: newSelectedImage.type,
           name: newSelectedImage.fileName,
         });
+        setIsLoading(true);
         axios
           .post("https://pear-different-snail.cyclic.app/image", formData, {
             headers: {
@@ -73,13 +73,17 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             },
           })
           .then((res) => {
+            setIsLoading(false);
             const message = res?.data?.message ?? "";
             // setResult(message);
             NavigationService.navigate(SCREENS.DETAIL, {
               message,
             });
           })
-          .catch((err) => console.error(err));
+          .catch((err) => {
+            // setIsLoading(false);
+            console.error(err);
+          });
         // setSelectedImage(newSelectedImage);
       }
     });
@@ -110,6 +114,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           type: newSelectedImage.type,
           name: newSelectedImage.fileName,
         });
+        setIsLoading(true);
         axios
           .post("https://pear-different-snail.cyclic.app/image", formData, {
             headers: {
@@ -117,61 +122,69 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             },
           })
           .then((res) => {
+            setIsLoading(false);
             const message = res?.data?.message ?? "";
             // setResult(message);
             NavigationService.navigate(SCREENS.DETAIL, {
               message,
             });
           })
-          .catch((err) => console.error(err));
+          .catch((err) => {
+            // setIsLoading(false);
+            console.error(err);
+          });
         // setSelectedImage(newSelectedImage);
       }
     });
   };
 
-  return (
-    <SafeAreaView>
-      <Header />
-      <View style={styles.container}>
-        <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
-          Scan Ingredients
-        </Text>
+  return isLoading ? (
+    <View style={{ height: "100%" }}>
+      <Loading />
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
+        Scan Ingredients
+      </Text>
+      <Text
+        fontFamily={fonts.poppins.regular}
+        style={{ fontSize: 16, paddingTop: 16 }}
+      >
+        Scan the ingredients on your food
+      </Text>
+
+      <Image
+        source={require(imagesIngredientsExample)}
+        style={{ width: 200, height: 200, marginVertical: 80 }}
+      />
+
+      <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
+        Take a photo of the ingredients lists
+      </Text>
+      <RNBounceable style={styles.buttonStyle} onPress={handleTakePhoto}>
         <Text
-          fontFamily={fonts.poppins.regular}
-          style={{ fontSize: 16, paddingTop: 16 }}
+          fontFamily={fonts.poppins.semiBold}
+          style={{ fontSize: 16, fontWeight: "bold" }}
+          color={colors.white}
         >
-          Scan the ingredients on your food
+          Take a picture
         </Text>
-
-        <Image
-          source={require(imagesIngredientsExample)}
-          style={{ width: 200, height: 200, marginVertical: 80 }}
-        />
-
-        <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
-          Take a photo of the ingredients lists
+      </RNBounceable>
+      <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
+        Or open one from your{" "}
+        <Text
+          onPress={handleImageSelect}
+          style={{
+            textDecorationLine: "underline",
+            fontWeight: "bold",
+          }}
+        >
+          Gallery
         </Text>
-        <RNBounceable style={styles.buttonStyle} onPress={handleTakePhoto}>
-          <Text
-            fontFamily={fonts.poppins.semiBold}
-            style={{ fontSize: 16, fontWeight: "bold" }}
-            color={colors.white}
-          >
-            Take a picture
-          </Text>
-        </RNBounceable>
-        <Text fontFamily={fonts.poppins.regular} style={{ fontSize: 14 }}>
-          Or open one from your{" "}
-          <Text
-            onPress={handleImageSelect}
-            style={{ textDecorationLine: "underline", fontWeight: "bold" }}
-          >
-            Gallery
-          </Text>
-        </Text>
-        {/* <Text>{result}</Text> */}
-      </View>
-    </SafeAreaView>
+      </Text>
+      {/* <Text>{result}</Text> */}
+    </View>
   );
 };
 
