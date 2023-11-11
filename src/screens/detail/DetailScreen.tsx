@@ -52,16 +52,18 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
           }
           style={{ width: 200, height: 200 }}
         />
-        <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
+        <Text fontFamily={fonts.poppins.semiBold} color={colors.black} h1>
           {message === "The product isn't vegan" ? "Non - Vegan" : "Vegan"}
         </Text>
         <RNBounceable
           style={styles.buttonStyle}
-          onPress={() => NavigationService.navigate(SCREENS.HOME)}
+          onPress={() =>
+            NavigationService.navigate(SCREENS.HOME, { message: "Done" })
+          }
         >
           <Text
             fontFamily={fonts.poppins.semiBold}
-            style={{ fontSize: 16, fontWeight: "600", lineHeight: 24 }}
+            style={{ fontSize: 16, lineHeight: 24 }}
             color={colors.white}
           >
             Done

@@ -25,7 +25,7 @@ export default (theme: ExtendedTheme) => {
       height: 45,
       width: "90%",
       marginVertical: 12,
-      borderRadius: 100,
+      borderRadius: 8,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#4A6130",

@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Image, View } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { useRoute, useTheme } from "@react-navigation/native";
 /**
  * ? Local Imports
  */
@@ -16,11 +16,10 @@ import {
 } from "react-native-image-picker";
 import axios from "axios";
 import fonts from "@fonts";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { SCREENS } from "@shared-constants";
 import * as NavigationService from "react-navigation-helpers";
-import Header from "./components/header/Header";
 import Loading from "./components/loading/Loading";
+import Toast from "react-native-toast-message";
 
 interface HomeScreenProps {}
 interface SelectedImage {
@@ -35,10 +34,20 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const route = useRoute();
   // const [result, setResult] = useState<string>("");
 
   const imagesIngredientsExample =
     "../../assets/images/ingredients-example.png";
+
+  const showToast = () => {
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2:
+        "An unexpected error occurred. Please try again or contact support for assistance.",
+    });
+  };
 
   const handleImageSelect = () => {
     const options: { mediaType: MediaType; includeBase64: boolean } = {
@@ -73,7 +82,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             },
           })
           .then((res) => {
-            setIsLoading(false);
+            console.log({ res });
             const message = res?.data?.message ?? "";
             // setResult(message);
             NavigationService.navigate(SCREENS.DETAIL, {
@@ -81,7 +90,8 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             });
           })
           .catch((err) => {
-            // setIsLoading(false);
+            setIsLoading(false);
+            showToast();
             console.error(err);
           });
         // setSelectedImage(newSelectedImage);
@@ -122,7 +132,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             },
           })
           .then((res) => {
-            setIsLoading(false);
+            console.log({ res });
             const message = res?.data?.message ?? "";
             // setResult(message);
             NavigationService.navigate(SCREENS.DETAIL, {
@@ -130,13 +140,19 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             });
           })
           .catch((err) => {
-            // setIsLoading(false);
+            setIsLoading(false);
+            showToast();
             console.error(err);
           });
-        // setSelectedImage(newSelectedImage);
       }
     });
   };
+
+  useEffect(() => {
+    if ((route?.params as any)?.message === "Done") {
+      setIsLoading(false);
+    }
+  }, [route]);
 
   return isLoading ? (
     <View style={{ height: "100%" }}>
@@ -144,7 +160,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
     </View>
   ) : (
     <View style={styles.container}>
-      <Text fontFamily={fonts.poppins.semiBold} color={colors.text} h1>
+      <Text fontFamily={fonts.poppins.semiBold} color={colors.black} h1>
         Scan Ingredients
       </Text>
       <Text
@@ -163,11 +179,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         Take a photo of the ingredients lists
       </Text>
       <RNBounceable style={styles.buttonStyle} onPress={handleTakePhoto}>
-        <Text
-          fontFamily={fonts.poppins.semiBold}
-          style={{ fontSize: 16, fontWeight: "bold" }}
-          color={colors.white}
-        >
+        <Text fontFamily={fonts.poppins.semiBold} color={colors.white}>
           Take a picture
         </Text>
       </RNBounceable>

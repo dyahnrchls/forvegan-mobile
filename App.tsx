@@ -7,6 +7,7 @@ import SplashScreen from "react-native-splash-screen";
  */
 import Navigation from "./src/navigation";
 import { isAndroid } from "@freakycoder/react-native-helpers";
+import Toast from "react-native-toast-message";
 
 LogBox.ignoreAllLogs();
 
@@ -29,6 +30,7 @@ const App = () => {
   return (
     <>
       <Navigation />
+      <Toast />
     </>
   );
 };
