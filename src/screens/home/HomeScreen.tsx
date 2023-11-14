@@ -20,6 +20,7 @@ import { SCREENS } from "@shared-constants";
 import * as NavigationService from "react-navigation-helpers";
 import Loading from "./components/loading/Loading";
 import Toast from "react-native-toast-message";
+import { openCropper } from "react-native-image-crop-picker";
 
 interface HomeScreenProps {}
 interface SelectedImage {
@@ -62,38 +63,45 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         console.error("ImagePicker Error: ", response.errorMessage);
       } else {
         const assets = response.assets as Asset[];
-        const newSelectedImage: SelectedImage = {
-          uri: assets[0].uri || "",
-          type: assets[0].type || "",
-          fileName: assets[0].fileName || "",
-          fileSize: assets[0].fileSize || 0,
-        };
-        const formData = new FormData();
-        formData.append("image", {
-          uri: newSelectedImage.uri,
-          type: newSelectedImage.type,
-          name: newSelectedImage.fileName,
-        });
-        setIsLoading(true);
-        axios
-          .post("https://pear-different-snail.cyclic.app/image", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => {
-            console.log({ res });
-            const message = res?.data?.message ?? "";
-            // setResult(message);
-            NavigationService.navigate(SCREENS.DETAIL, {
-              message,
-            });
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            showToast();
-            console.error(err);
+        openCropper({
+          path: assets[0].uri as string,
+          mediaType: "photo",
+          freeStyleCropEnabled: true,
+          cropping: true,
+        }).then((image) => {
+          const newSelectedImage: SelectedImage = {
+            uri: image.path,
+            type: assets[0].type || "",
+            fileName: assets[0].fileName || "",
+            fileSize: assets[0].fileSize || 0,
+          };
+          const formData = new FormData();
+          formData.append("image", {
+            uri: newSelectedImage.uri,
+            type: newSelectedImage.type,
+            name: newSelectedImage.fileName,
           });
+          setIsLoading(true);
+          axios
+            .post("https://pear-different-snail.cyclic.app/image", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((res) => {
+              console.log({ res });
+              const message = res?.data?.message ?? "";
+              // setResult(message);
+              NavigationService.navigate(SCREENS.DETAIL, {
+                message,
+              });
+            })
+            .catch((err) => {
+              setIsLoading(false);
+              showToast();
+              console.error(err);
+            });
+        });
         // setSelectedImage(newSelectedImage);
       }
     });
@@ -112,38 +120,45 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
         console.error("ImagePicker Error: ", response.errorMessage);
       } else {
         const assets = response.assets as Asset[];
-        const newSelectedImage: SelectedImage = {
-          uri: assets[0].uri || "",
-          type: assets[0].type || "",
-          fileName: assets[0].fileName || "",
-          fileSize: assets[0].fileSize || 0,
-        };
-        const formData = new FormData();
-        formData.append("image", {
-          uri: newSelectedImage.uri,
-          type: newSelectedImage.type,
-          name: newSelectedImage.fileName,
-        });
-        setIsLoading(true);
-        axios
-          .post("https://pear-different-snail.cyclic.app/image", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => {
-            console.log({ res });
-            const message = res?.data?.message ?? "";
-            // setResult(message);
-            NavigationService.navigate(SCREENS.DETAIL, {
-              message,
-            });
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            showToast();
-            console.error(err);
+        openCropper({
+          path: assets[0].uri as string,
+          mediaType: "photo",
+          freeStyleCropEnabled: true,
+          cropping: true,
+        }).then((image) => {
+          const newSelectedImage: SelectedImage = {
+            uri: image.path || "",
+            type: assets[0].type || "",
+            fileName: assets[0].fileName || "",
+            fileSize: assets[0].fileSize || 0,
+          };
+          const formData = new FormData();
+          formData.append("image", {
+            uri: newSelectedImage.uri,
+            type: newSelectedImage.type,
+            name: newSelectedImage.fileName,
           });
+          setIsLoading(true);
+          axios
+            .post("https://pear-different-snail.cyclic.app/image", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((res) => {
+              console.log({ res });
+              const message = res?.data?.message ?? "";
+              // setResult(message);
+              NavigationService.navigate(SCREENS.DETAIL, {
+                message,
+              });
+            })
+            .catch((err) => {
+              setIsLoading(false);
+              showToast();
+              console.error(err);
+            });
+        });
       }
     });
   };

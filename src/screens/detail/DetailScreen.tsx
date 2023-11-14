@@ -41,19 +41,34 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
   const vegan = "../../assets/images/vegan.png";
   const nonVegan = "../../assets/images/non-vegan.png";
 
+  const getResult = () => {
+    if (message === "The product is vegan") {
+      return "Vegan";
+    }
+
+    if (message === "Unknown product") {
+      return "Unknown";
+    }
+    return "Non Vegan";
+  };
+
+  const getPhoto = () => {
+    if (message === "The product is vegan") {
+      return require(vegan);
+    }
+
+    if (message === "Unknown product") {
+      return require(nonVegan);
+    }
+    return require(nonVegan);
+  };
+
   return (
     <View>
       <View style={styles.container}>
-        <Image
-          source={
-            message === "The product isn't vegan"
-              ? require(nonVegan)
-              : require(vegan)
-          }
-          style={{ width: 200, height: 200 }}
-        />
+        <Image source={getPhoto()} style={{ width: 200, height: 200 }} />
         <Text fontFamily={fonts.poppins.semiBold} color={colors.black} h1>
-          {message === "The product isn't vegan" ? "Non - Vegan" : "Vegan"}
+          {getResult()}
         </Text>
         <RNBounceable
           style={styles.buttonStyle}
