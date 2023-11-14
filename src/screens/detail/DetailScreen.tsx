@@ -40,6 +40,7 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
 
   const vegan = "../../assets/images/vegan.png";
   const nonVegan = "../../assets/images/non-vegan.png";
+  const unknownProduct = "../../assets/images/unknown-product.png";
 
   const getResult = () => {
     if (message === "The product is vegan") {
@@ -47,7 +48,7 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
     }
 
     if (message === "Unknown product") {
-      return "Unknown";
+      return "Unidentified";
     }
     return "Non Vegan";
   };
@@ -58,7 +59,7 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
     }
 
     if (message === "Unknown product") {
-      return require(nonVegan);
+      return require(unknownProduct);
     }
     return require(nonVegan);
   };
@@ -70,6 +71,15 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
         <Text fontFamily={fonts.poppins.semiBold} color={colors.black} h1>
           {getResult()}
         </Text>
+        {message === "Unknown product" && (
+          <Text
+            fontFamily={fonts.poppins.regular}
+            style={{ fontWeight: "400", fontSize: 15 }}
+            color="#777"
+          >
+            Item unidentified, please take another picture.
+          </Text>
+        )}
         <RNBounceable
           style={styles.buttonStyle}
           onPress={() =>
@@ -81,7 +91,7 @@ const DetailScreen: React.FC<DetailScreenProps> = ({ route }) => {
             style={{ fontSize: 16, lineHeight: 24 }}
             color={colors.white}
           >
-            Done
+            {message === "Unknown product" ? "Try Again" : "Done"}
           </Text>
         </RNBounceable>
         {/* <Text
